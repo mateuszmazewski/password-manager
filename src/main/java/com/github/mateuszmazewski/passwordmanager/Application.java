@@ -17,7 +17,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  */
 @SpringBootApplication
 @Theme(value = "password-manager")
-@PWA(name = "password-manager", shortName = "password-manager", offlineResources = {"images/logo.png"})
+//@PWA(name = "password-manager", shortName = "password-manager", offlineResources = {"images/logo.png"})
 @NpmPackage(value = "line-awesome", version = "1.3.0")
 public class Application extends SpringBootServletInitializer implements AppShellConfigurator {
 

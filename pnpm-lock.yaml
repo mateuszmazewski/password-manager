@@ -103,6 +103,7 @@ dependencies:
   '@vaadin/virtual-list': 22.0.2
   construct-style-sheets-polyfill: 3.0.4
   date-fns: 2.23.0
+  line-awesome: 1.3.0
   lit: 2.0.0
 devDependencies:
   '@vaadin/application-theme-plugin': link:target/plugins/application-theme-plugin
@@ -3840,16 +3841,16 @@ packages:
       integrity: sha512-Z942RysHXmJrhqk88FmKBVq/v5tqmSkDz7p54G/MGyjMnCFFnC79XWNbg+Vta8W6Wb2qtSZTSxIGkJrRpCFEiA==
   /browserslist/3.2.8:
     dependencies:
-      caniuse-lite: 1.0.30001291
-      electron-to-chromium: 1.4.25
+      caniuse-lite: 1.0.30001292
+      electron-to-chromium: 1.4.26
     dev: true
     hasBin: true
     resolution:
       integrity: sha512-WHVocJYavUwVgVViC0ORikPHQquXwVh939TaelZ4WDqpWgTX/FsGhl/+P4qBUAGcRvtOgDgC+xftNWWp2RUTAQ==
   /browserslist/4.19.1:
     dependencies:
-      caniuse-lite: 1.0.30001291
-      electron-to-chromium: 1.4.25
+      caniuse-lite: 1.0.30001292
+      electron-to-chromium: 1.4.26
       escalade: 3.1.1
       node-releases: 2.0.1
       picocolors: 1.0.0
@@ -3995,10 +3996,10 @@ packages:
       node: '>=10'
     resolution:
       integrity: sha512-tVI4q5jjFV5CavAU8DXfza/TJcZutVKo/5Foskmsqcm0MsL91moHvwiGNnqaa2o6PF/7yT5ikDRcVcl8Rj6LCA==
-  /caniuse-lite/1.0.30001291:
+  /caniuse-lite/1.0.30001292:
     dev: true
     resolution:
-      integrity: sha512-roMV5V0HNGgJ88s42eE70sstqGW/gwFndosYrikHthw98N5tLnOTxFqMLQjZVRxTWFlJ4rn+MsgXrR7MDPY4jA==
+      integrity: sha512-jnT4Tq0Q4ma+6nncYQVe7d73kmDmE9C3OGTx3MvW7lBM/eY1S1DZTMBON7dqV481RhNiS5OxD7k9JQvmDOTirw==
   /chalk/1.1.3:
     dependencies:
       ansi-styles: 2.2.1
@@ -4683,10 +4684,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-9lt9Zse4hPucPkoP7FHDF0LQAlGyF9JVpnClFLFH3aSSbxmyoqINRpp/9wePWJTUl4KOQwRL72Iw3InHPDkoGw==
-  /electron-to-chromium/1.4.25:
+  /electron-to-chromium/1.4.26:
     dev: true
     resolution:
-      integrity: sha512-bTwub9Y/76EiNmfaiJih+hAy6xn7Ns95S4KvI2NuKNOz8TEEKKQUu44xuy0PYMudjM9zdjKRS1bitsUvHTfuUg==
+      integrity: sha512-cA1YwlRzO6TGp7yd3+KAqh9Tt6Z4CuuKqsAJP6uF/H5MQryjAGDhMhnY5cEXo8MaRCczpzSBhMPdqRIodkbZYw==
   /elliptic/6.5.4:
     dependencies:
       bn.js: 4.12.0
@@ -6190,6 +6191,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==
+  /line-awesome/1.3.0:
+    dev: false
+    resolution:
+      integrity: sha512-Y0YHksL37ixDsHz+ihCwOtF5jwJgCDxQ3q+zOVgaSW8VugHGTsZZXMacPYZB1/JULBi6BAuTCTek+4ZY/UIwcw==
   /lines-and-columns/1.2.4:
     dev: true
     resolution:
@@ -7081,7 +7086,7 @@ packages:
     dependencies:
       icss-utils: 4.1.1
       postcss: 7.0.39
-      postcss-selector-parser: 6.0.7
+      postcss-selector-parser: 6.0.8
       postcss-value-parser: 4.2.0
     dev: true
     engines:
@@ -7091,7 +7096,7 @@ packages:
   /postcss-modules-scope/2.2.0:
     dependencies:
       postcss: 7.0.39
-      postcss-selector-parser: 6.0.7
+      postcss-selector-parser: 6.0.8
     dev: true
     engines:
       node: '>= 6'
@@ -7104,7 +7109,7 @@ packages:
     dev: true
     resolution:
       integrity: sha512-1//E5jCBrZ9DmRX+zCtmQtRSV6PV42Ix7Bzj9GbwJceduuf7IqP8MgeTXuRDHOWj2m0VzZD5+roFWDuU8RQjcg==
-  /postcss-selector-parser/6.0.7:
+  /postcss-selector-parser/6.0.8:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
@@ -7112,7 +7117,7 @@ packages:
     engines:
       node: '>=4'
     resolution:
-      integrity: sha512-U+b/Deoi4I/UmE6KOVPpnhS7I7AYdKbhGcat+qTQ27gycvaACvNEw11ba6RrkwVmDVRW7sigWgLj4/KbbJjeDA==
+      integrity: sha512-D5PG53d209Z1Uhcc0qAZ5U3t5HagH3cxu+WLZ22jt3gLUpXM4eXXfiO14jiDWST3NNooX/E8wISfOhZ9eIjGTQ==
   /postcss-value-parser/4.2.0:
     dev: true
     resolution:
@@ -9044,6 +9049,7 @@ specifiers:
   fork-ts-checker-webpack-plugin: 6.2.1
   glob: 7.1.6
   html-webpack-plugin: 4.5.1
+  line-awesome: 1.3.0
   lit: 2.0.0
   lit-css-loader: 0.1.0
   loader-utils: 2.0.0

@@ -1,6 +1,5 @@
-package com.github.mateuszmazewski.passwordmanager.views.about;
+package com.github.mateuszmazewski.passwordmanager.views;
 
-import com.github.mateuszmazewski.passwordmanager.views.MainLayout;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;

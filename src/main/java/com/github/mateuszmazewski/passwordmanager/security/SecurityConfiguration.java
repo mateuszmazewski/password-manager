@@ -1,6 +1,6 @@
 package com.github.mateuszmazewski.passwordmanager.security;
 
-import com.github.mateuszmazewski.passwordmanager.views.login.LoginView;
+import com.github.mateuszmazewski.passwordmanager.views.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

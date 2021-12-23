@@ -1,7 +1,10 @@
 package com.github.mateuszmazewski.passwordmanager.data.service;
 
 import com.github.mateuszmazewski.passwordmanager.data.entity.SamplePerson;
+
 import java.util.Optional;
+
+import com.github.mateuszmazewski.passwordmanager.data.repository.SamplePersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SamplePersonService {
 
-    private SamplePersonRepository repository;
+    private final SamplePersonRepository repository;
 
     public SamplePersonService(@Autowired SamplePersonRepository repository) {
         this.repository = repository;

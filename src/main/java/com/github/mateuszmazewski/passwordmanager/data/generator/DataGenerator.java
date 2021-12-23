@@ -3,15 +3,17 @@ package com.github.mateuszmazewski.passwordmanager.data.generator;
 import com.github.mateuszmazewski.passwordmanager.data.Role;
 import com.github.mateuszmazewski.passwordmanager.data.entity.SamplePerson;
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
-import com.github.mateuszmazewski.passwordmanager.data.service.SamplePersonRepository;
-import com.github.mateuszmazewski.passwordmanager.data.service.UserRepository;
+import com.github.mateuszmazewski.passwordmanager.data.repository.SamplePersonRepository;
+import com.github.mateuszmazewski.passwordmanager.data.repository.UserRepository;
 import com.vaadin.exampledata.DataType;
 import com.vaadin.exampledata.ExampleDataGenerator;
 import com.vaadin.flow.spring.annotation.SpringComponent;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -23,7 +25,7 @@ public class DataGenerator {
 
     @Bean
     public CommandLineRunner loadData(PasswordEncoder passwordEncoder, SamplePersonRepository samplePersonRepository,
-            UserRepository userRepository) {
+                                      UserRepository userRepository) {
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
             if (samplePersonRepository.count() != 0L) {

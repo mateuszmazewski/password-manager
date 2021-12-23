@@ -1,7 +1,7 @@
 package com.github.mateuszmazewski.passwordmanager.security;
 
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
-import com.github.mateuszmazewski.passwordmanager.data.service.UserRepository;
+import com.github.mateuszmazewski.passwordmanager.data.repository.UserRepository;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinServletRequest;
 import java.util.Optional;

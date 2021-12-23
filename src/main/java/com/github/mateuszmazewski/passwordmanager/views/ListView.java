@@ -1,8 +1,7 @@
-package com.github.mateuszmazewski.passwordmanager.views.list;
+package com.github.mateuszmazewski.passwordmanager.views;
 
 import com.github.mateuszmazewski.passwordmanager.data.entity.SamplePerson;
 import com.github.mateuszmazewski.passwordmanager.data.service.SamplePersonService;
-import com.github.mateuszmazewski.passwordmanager.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
 import com.vaadin.flow.component.UI;

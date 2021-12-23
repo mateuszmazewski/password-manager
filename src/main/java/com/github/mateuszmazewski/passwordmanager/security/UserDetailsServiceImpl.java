@@ -1,7 +1,7 @@
 package com.github.mateuszmazewski.passwordmanager.security;
 
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
-import com.github.mateuszmazewski.passwordmanager.data.service.UserRepository;
+import com.github.mateuszmazewski.passwordmanager.data.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;

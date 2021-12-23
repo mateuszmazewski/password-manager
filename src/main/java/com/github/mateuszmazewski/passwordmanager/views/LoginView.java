@@ -1,4 +1,4 @@
-package com.github.mateuszmazewski.passwordmanager.views.login;
+package com.github.mateuszmazewski.passwordmanager.views;
 
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;

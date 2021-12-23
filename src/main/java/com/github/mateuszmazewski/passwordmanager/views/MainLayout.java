@@ -2,8 +2,6 @@ package com.github.mateuszmazewski.passwordmanager.views;
 
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
 import com.github.mateuszmazewski.passwordmanager.security.AuthenticatedUser;
-import com.github.mateuszmazewski.passwordmanager.views.about.AboutView;
-import com.github.mateuszmazewski.passwordmanager.views.list.ListView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.avatar.Avatar;
@@ -72,7 +70,7 @@ public class MainLayout extends AppLayout {
         Div layout = new Div();
         layout.addClassNames("flex", "h-xl", "items-center", "px-l");
 
-        H1 appName = new H1("password-manager");
+        H1 appName = new H1("Menadżer haseł");
         appName.addClassNames("my-0", "me-auto", "text-l");
         layout.add(appName);
 
@@ -118,7 +116,7 @@ public class MainLayout extends AppLayout {
     private List<RouterLink> createLinks() {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{ //
                 new MenuItemInfo("List", "la la-key", ListView.class), //
-
+                new MenuItemInfo("Sejf", "la la-key", VaultView.class),
                 new MenuItemInfo("About", "la la-info-circle", AboutView.class), //
 
         };

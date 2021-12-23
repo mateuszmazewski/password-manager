@@ -1,0 +1,134 @@
+package com.github.mateuszmazewski.passwordmanager.views;
+
+import com.github.mateuszmazewski.passwordmanager.data.entity.VaultEntity;
+import com.github.mateuszmazewski.passwordmanager.data.service.VaultEntityService;
+import com.github.mateuszmazewski.passwordmanager.views.forms.VaultEntityForm;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.data.value.ValueChangeMode;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import javax.annotation.security.PermitAll;
+
+@PageTitle("Sejf")
+@Route(value = "vault", layout = MainLayout.class)
+@PermitAll
+public class VaultView extends VerticalLayout {
+    Grid<VaultEntity> grid = new Grid<>(VaultEntity.class);
+    TextField filterName = new TextField("Nazwa");
+    VaultEntityForm form;
+    private final VaultEntityService service;
+
+    public VaultView(VaultEntityService service) {
+        this.service = service;
+        setSizeFull();
+
+        configureGrid();
+        configureForm();
+
+        add(getToolbar(), getContent());
+        updateList();
+        closeEditor();
+    }
+
+    private void closeEditor() {
+        form.setVaultEntity(null);
+        form.setVisible(false);
+        removeClassName("editing");
+    }
+
+    private void updateList() {
+        grid.setItems(service.find(filterName.getValue()));
+    }
+
+    private Component getContent() {
+        HorizontalLayout content = new HorizontalLayout(grid, form);
+        content.setFlexGrow(2, grid);
+        content.setFlexGrow(1, form);
+        content.addClassName("content");
+        content.setSizeFull();
+
+        return content;
+    }
+
+    private void configureForm() {
+        form = new VaultEntityForm();
+        form.setWidth("25em");
+
+        form.addListener(VaultEntityForm.SaveEvent.class, this::saveVaultEntity);
+        form.addListener(VaultEntityForm.DeleteEvent.class, this::deleteVaultEntity);
+        form.addListener(VaultEntityForm.CloseEvent.class, e -> closeEditor());
+    }
+
+    private void saveVaultEntity(VaultEntityForm.SaveEvent event) {
+        service.update((VaultEntity) event.getEntity());
+        updateList();
+        closeEditor();
+    }
+
+    private void deleteVaultEntity(VaultEntityForm.DeleteEvent event) {
+        try {
+            service.delete(event.getEntity().getId());
+            updateList();
+            closeEditor();
+        } catch (DataIntegrityViolationException e) {
+            //Notification.show("Nie można usunąć ze względu na więzy integralności").addThemeVariants(NotificationVariant.LUMO_ERROR);
+        }
+    }
+
+    private Component getToolbar() {
+        filterName.setClearButtonVisible(true);
+        filterName.setValueChangeMode(ValueChangeMode.LAZY);
+        filterName.addValueChangeListener(e -> updateList());
+
+        Button addButton = new Button("Dodaj nowe dane logowania");
+        addButton.addClickListener(e -> addVaultEntity());
+
+        HorizontalLayout toolbar = new HorizontalLayout(filterName, addButton);
+        toolbar.setDefaultVerticalComponentAlignment(Alignment.BASELINE);
+
+        return toolbar;
+    }
+
+    private void addVaultEntity() {
+        grid.asSingleSelect().clear();
+        editVaultEntity(new VaultEntity());
+    }
+
+    private void configureGrid() {
+        grid.setSizeFull();
+        grid.removeAllColumns();
+
+        grid.addColumn(VaultEntity::getName).setHeader("Nazwa").setSortable(true);
+        grid.addColumn(
+                new ComponentRenderer<>(
+                        vaultEntity -> {
+                            Anchor anchor = new Anchor(vaultEntity.getUrl(), vaultEntity.getUrl());
+                            anchor.setTarget("_blank"); // Open in new tab
+                            return anchor;
+                        }
+                )
+        ).setHeader("Url").setSortable(false);
+
+        grid.getColumns().forEach(col -> col.setAutoWidth(true));
+        grid.asSingleSelect().addValueChangeListener(e -> editVaultEntity(e.getValue()));
+    }
+
+    private void editVaultEntity(VaultEntity vaultEntity) {
+        if (vaultEntity == null) {
+            closeEditor();
+        } else {
+            form.setVaultEntity(vaultEntity);
+            form.setVisible(true);
+            addClassName("editing");
+        }
+    }
+}

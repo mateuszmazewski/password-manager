@@ -39,4 +39,8 @@ public class UserService {
         return (int) repository.count();
     }
 
+    public boolean userExists(String username) {
+        return repository.findByUsername(username) != null;
+    }
+
 }

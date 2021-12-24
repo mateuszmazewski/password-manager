@@ -43,4 +43,8 @@ public class UserService {
         return repository.findByUsername(username) != null;
     }
 
+    public User findByUsername(String username) {
+        return repository.findByUsername(username);
+    }
+
 }

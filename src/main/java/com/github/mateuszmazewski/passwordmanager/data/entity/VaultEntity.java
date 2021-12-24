@@ -12,6 +12,8 @@ public class VaultEntity extends AbstractEntity {
     private String name;
 
     private String url;
+    private String username;
+
     private String encryptedPassword;
 
     public String getName() {
@@ -28,6 +30,14 @@ public class VaultEntity extends AbstractEntity {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEncryptedPassword() {

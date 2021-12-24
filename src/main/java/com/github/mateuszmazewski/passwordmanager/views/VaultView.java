@@ -2,6 +2,7 @@ package com.github.mateuszmazewski.passwordmanager.views;
 
 import com.github.mateuszmazewski.passwordmanager.data.entity.VaultEntity;
 import com.github.mateuszmazewski.passwordmanager.data.service.VaultEntityService;
+import com.github.mateuszmazewski.passwordmanager.security.AuthenticatedUser;
 import com.github.mateuszmazewski.passwordmanager.views.forms.VaultEntityForm;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -15,6 +16,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.annotation.security.PermitAll;
 
@@ -26,9 +28,13 @@ public class VaultView extends VerticalLayout {
     TextField filterName = new TextField("Nazwa");
     VaultEntityForm form;
     private final VaultEntityService service;
+    private final AuthenticatedUser authenticatedUser;
+    private final PasswordEncoder passwordEncoder;
 
-    public VaultView(VaultEntityService service) {
+    public VaultView(VaultEntityService service, AuthenticatedUser authenticatedUser, PasswordEncoder passwordEncoder) {
         this.service = service;
+        this.authenticatedUser = authenticatedUser;
+        this.passwordEncoder = passwordEncoder;
         setSizeFull();
 
         configureGrid();
@@ -60,7 +66,7 @@ public class VaultView extends VerticalLayout {
     }
 
     private void configureForm() {
-        form = new VaultEntityForm();
+        form = new VaultEntityForm(authenticatedUser, passwordEncoder);
         form.setWidth("25em");
 
         form.addListener(VaultEntityForm.SaveEvent.class, this::saveVaultEntity);
@@ -117,17 +123,30 @@ public class VaultView extends VerticalLayout {
                         }
                 )
         ).setHeader("Url").setSortable(false);
+        grid.addColumn(
+                new ComponentRenderer<>(
+                        vaultEntity -> {
+                            Button button = new Button("Deszyfruj");
+                            button.addClickListener(e -> editVaultEntity(vaultEntity));
+                            return button;
+                        }
+                )
+        ).setHeader("Wyświetlenie/Edycja");
 
         grid.getColumns().forEach(col -> col.setAutoWidth(true));
-        grid.asSingleSelect().addValueChangeListener(e -> editVaultEntity(e.getValue()));
     }
 
     private void editVaultEntity(VaultEntity vaultEntity) {
         if (vaultEntity == null) {
             closeEditor();
         } else {
-            form.setVaultEntity(vaultEntity);
-            form.setVisible(true);
+            if (vaultEntity.getEncryptedPassword() == null || vaultEntity.getEncryptedPassword().isEmpty()) { // Adding new
+                form.setVaultEntity(vaultEntity);
+                form.setVisible(true);
+            } else { // Editing existing
+                form.validateMasterPasswordDialog(VaultEntityForm.Action.DECRYPT);
+                form.setVaultEntity(vaultEntity);
+            }
             addClassName("editing");
         }
     }

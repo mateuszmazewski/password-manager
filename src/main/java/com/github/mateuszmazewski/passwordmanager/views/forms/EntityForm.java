@@ -4,7 +4,6 @@ import com.github.mateuszmazewski.passwordmanager.data.AbstractEntity;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
 import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -21,8 +20,8 @@ public class EntityForm extends FormLayout {
         deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
         cancelButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
-        saveButton.addClickShortcut(Key.ENTER);
-        cancelButton.addClickShortcut(Key.ESCAPE);
+        //saveButton.addClickShortcut(Key.ENTER);
+        //cancelButton.addClickShortcut(Key.ESCAPE);
 
         return new HorizontalLayout(saveButton, deleteButton, cancelButton);
     }

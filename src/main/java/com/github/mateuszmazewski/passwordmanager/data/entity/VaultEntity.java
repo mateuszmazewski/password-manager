@@ -4,9 +4,13 @@ import com.github.mateuszmazewski.passwordmanager.data.AbstractEntity;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class VaultEntity extends AbstractEntity {
+
+    @NotNull
+    private Integer userId;
 
     @NotBlank
     private String name;
@@ -15,6 +19,14 @@ public class VaultEntity extends AbstractEntity {
     private String username;
 
     private String encryptedPassword;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
     public String getName() {
         return name;

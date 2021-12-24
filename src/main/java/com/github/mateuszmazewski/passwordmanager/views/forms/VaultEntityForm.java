@@ -3,7 +3,6 @@ package com.github.mateuszmazewski.passwordmanager.views.forms;
 import com.github.mateuszmazewski.passwordmanager.data.Messages;
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
 import com.github.mateuszmazewski.passwordmanager.data.entity.VaultEntity;
-import com.github.mateuszmazewski.passwordmanager.security.AuthenticatedUser;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -26,7 +25,7 @@ public class VaultEntityForm extends EntityForm {
     TextField name = new TextField("Nazwa");
     TextField url = new TextField("Url");
     TextField username = new TextField("Nazwa użytkownika");
-    PasswordField password = new PasswordField("Hasło"); //TODO - change to password and use real encryption
+    PasswordField password = new PasswordField("Hasło");
     private VaultEntity vaultEntity;
     private final PasswordEncoder passwordEncoder;
     private final User authenticatedUser;
@@ -37,17 +36,11 @@ public class VaultEntityForm extends EntityForm {
         DECRYPT
     }
 
-    public VaultEntityForm(AuthenticatedUser authenticatedUser, PasswordEncoder passwordEncoder) {
+    public VaultEntityForm(User authenticatedUser, PasswordEncoder passwordEncoder) {
         super();
         this.passwordEncoder = passwordEncoder;
+        this.authenticatedUser = authenticatedUser;
         binder.bindInstanceFields(this);
-
-        if (authenticatedUser.get().isPresent()) {
-            this.authenticatedUser = authenticatedUser.get().get();
-        } else {
-            this.authenticatedUser = null;
-            Notification.show(Messages.AUTHENTICATED_USER_ERROR).addThemeVariants(NotificationVariant.LUMO_ERROR);
-        }
 
         password.addValueChangeListener(e -> validatePassword());
 
@@ -118,8 +111,9 @@ public class VaultEntityForm extends EntityForm {
 
             if (authenticatedUser != null) {
                 String hashedMasterPassword = authenticatedUser.getHashedMasterPassword();
-                if (passwordEncoder.matches(masterPasswordField.getValue(), hashedMasterPassword)) {
-                    performAction(action);
+                String givenMasterPasword = masterPasswordField.getValue();
+                if (passwordEncoder.matches(givenMasterPasword, hashedMasterPassword)) {
+                    performAction(action, givenMasterPasword);
                     dialog.close();
                 } else {
                     Notification.show(Messages.INVALID_MASTER_PASSWORD).addThemeVariants(NotificationVariant.LUMO_ERROR);
@@ -138,10 +132,9 @@ public class VaultEntityForm extends EntityForm {
         dialog.open();
     }
 
-    private void performAction(Action action) {
+    private void performAction(Action action, String masterPassword) {
         if (action == Action.SAVE) {
             //TODO - encrypt and save
-            fireEvent(new SaveEvent(this, vaultEntity));
         } else if (action == Action.DELETE) {
             fireEvent(new DeleteEvent(this, vaultEntity));
         } else if (action == Action.DECRYPT) {

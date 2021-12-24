@@ -17,12 +17,8 @@ public class VaultEntityService {
         this.repository = repository;
     }
 
-    public List<VaultEntity> find(String filterName) {
-        if (filterName == null || filterName.isEmpty()) {
-            return repository.findAll();
-        } else {
-            return repository.search(filterName);
-        }
+    public List<VaultEntity> find(Integer userId, String filterName) {
+        return repository.search(userId, filterName);
     }
 
     public List<VaultEntity> findAll() {

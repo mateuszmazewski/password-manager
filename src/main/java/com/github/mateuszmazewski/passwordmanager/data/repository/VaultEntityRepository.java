@@ -10,7 +10,8 @@ import java.util.List;
 public interface VaultEntityRepository extends JpaRepository<VaultEntity, Integer> {
 
     @Query("select ve from VaultEntity ve " +
-            "where lower(ve.name) like lower(concat('%', :searchName, '%'))")
-    List<VaultEntity> search(@Param("searchName") String searchName);
+            "where ve.userId = :searchUserId " +
+            "and lower(ve.name) like lower(concat('%', :searchName, '%'))")
+    List<VaultEntity> search(@Param("searchUserId") Integer userId, @Param("searchName") String searchName);
 
 }

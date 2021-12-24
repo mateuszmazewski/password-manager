@@ -1,5 +1,7 @@
 package com.github.mateuszmazewski.passwordmanager.views;
 
+import com.github.mateuszmazewski.passwordmanager.data.Messages;
+import com.github.mateuszmazewski.passwordmanager.data.entity.User;
 import com.github.mateuszmazewski.passwordmanager.data.entity.VaultEntity;
 import com.github.mateuszmazewski.passwordmanager.data.service.VaultEntityService;
 import com.github.mateuszmazewski.passwordmanager.security.AuthenticatedUser;
@@ -8,6 +10,8 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -28,14 +32,20 @@ public class VaultView extends VerticalLayout {
     TextField filterName = new TextField("Nazwa");
     VaultEntityForm form;
     private final VaultEntityService service;
-    private final AuthenticatedUser authenticatedUser;
+    private final User authenticatedUser;
     private final PasswordEncoder passwordEncoder;
 
     public VaultView(VaultEntityService service, AuthenticatedUser authenticatedUser, PasswordEncoder passwordEncoder) {
         this.service = service;
-        this.authenticatedUser = authenticatedUser;
         this.passwordEncoder = passwordEncoder;
         setSizeFull();
+
+        if (authenticatedUser.get().isPresent()) {
+            this.authenticatedUser = authenticatedUser.get().get();
+        } else {
+            this.authenticatedUser = null;
+            Notification.show(Messages.AUTHENTICATED_USER_ERROR).addThemeVariants(NotificationVariant.LUMO_ERROR);
+        }
 
         configureGrid();
         configureForm();
@@ -52,7 +62,11 @@ public class VaultView extends VerticalLayout {
     }
 
     private void updateList() {
-        grid.setItems(service.find(filterName.getValue()));
+        if (authenticatedUser != null) {
+            grid.setItems(service.find(authenticatedUser.getId(), filterName.getValue()));
+        } else {
+            Notification.show(Messages.AUTHENTICATED_USER_ERROR).addThemeVariants(NotificationVariant.LUMO_ERROR);
+        }
     }
 
     private Component getContent() {

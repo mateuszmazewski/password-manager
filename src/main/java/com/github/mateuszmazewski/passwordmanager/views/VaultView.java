@@ -100,7 +100,7 @@ public class VaultView extends VerticalLayout {
             updateList();
             closeEditor();
         } catch (DataIntegrityViolationException e) {
-            //Notification.show("Nie można usunąć ze względu na więzy integralności").addThemeVariants(NotificationVariant.LUMO_ERROR);
+            Notification.show(Messages.INTEGRITY).addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
     }
 

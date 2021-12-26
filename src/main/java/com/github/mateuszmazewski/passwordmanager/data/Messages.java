@@ -11,4 +11,5 @@ public class Messages {
     public static final String INVALID_MASTER_PASSWORD = "Podane hasło główne jest nieprawidłowe";
     public static final String MASTER_PASSWORD_REQUIRED = "Ta operacja wymaga podania hasła głównego";
     public static final String SAVE_ERROR = "Wystąpił nieznany błąd zapisu.";
+    public static final String INTEGRITY = "Nie można usunąć ze względu na więzy integralności.";
 }

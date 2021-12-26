@@ -3,6 +3,7 @@ package com.github.mateuszmazewski.passwordmanager.views.forms;
 import com.github.mateuszmazewski.passwordmanager.data.Messages;
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
 import com.github.mateuszmazewski.passwordmanager.data.entity.VaultEntity;
+import com.github.mateuszmazewski.passwordmanager.security.AESUtil;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -18,6 +19,10 @@ import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import java.util.Base64;
 
 public class VaultEntityForm extends EntityForm {
     Binder<VaultEntity> binder = new BeanValidationBinder<>(VaultEntity.class);
@@ -134,14 +139,36 @@ public class VaultEntityForm extends EntityForm {
 
     private void performAction(Action action, String masterPassword) {
         if (action == Action.SAVE) {
-            //TODO - encrypt and save
-            vaultEntity.setUserId(authenticatedUser.getId());
-            fireEvent(new SaveEvent(this, vaultEntity));
+            save(masterPassword);
         } else if (action == Action.DELETE) {
             fireEvent(new DeleteEvent(this, vaultEntity));
         } else if (action == Action.DECRYPT) {
             //TODO - decrypt and set visible
         }
+    }
+
+    private void save(String masterPassword) {
+        String plainPassword = password.getValue();
+        try {
+            byte[] salt = AESUtil.generateSalt(8);
+            SecretKey key = AESUtil.getKeyFromPassword(masterPassword, new String(salt));
+            IvParameterSpec ivParameterSpec = AESUtil.generateIv();
+            String algorithm = "AES/CBC/PKCS5Padding";
+            String encryptedPassword = AESUtil.encrypt(algorithm, plainPassword, key, ivParameterSpec);
+
+            vaultEntity.setEncryptedPassword(encryptedPassword);
+            vaultEntity.setSalt(Base64.getEncoder().encodeToString(salt));
+            vaultEntity.setIv(Base64.getEncoder().encodeToString(ivParameterSpec.getIV()));
+            vaultEntity.setUserId(authenticatedUser.getId());
+            fireEvent(new SaveEvent(this, vaultEntity));
+        } catch (Exception e) {
+            Notification.show(Messages.SAVE_ERROR).addThemeVariants(NotificationVariant.LUMO_ERROR);
+        }
+        name.clear();
+        url.clear();
+        username.clear();
+        password.clear();
+        password.setInvalid(false);
     }
 
 }

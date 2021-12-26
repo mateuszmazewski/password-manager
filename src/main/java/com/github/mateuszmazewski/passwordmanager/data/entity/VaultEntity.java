@@ -19,6 +19,8 @@ public class VaultEntity extends AbstractEntity {
     private String username;
 
     private String encryptedPassword;
+    private String salt;
+    private String iv;
 
     public Integer getUserId() {
         return userId;
@@ -59,4 +61,21 @@ public class VaultEntity extends AbstractEntity {
     public void setEncryptedPassword(String encryptedPassword) {
         this.encryptedPassword = encryptedPassword;
     }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    public String getIv() {
+        return iv;
+    }
+
+    public void setIv(String iv) {
+        this.iv = iv;
+    }
+
 }

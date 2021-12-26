@@ -18,6 +18,8 @@ public class AESUtil {
             throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+
+        // PBEKeySpec(char[] password, byte[] salt, int iterationCount, int keyLength)
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);
         return new SecretKeySpec(factory.generateSecret(spec)
                 .getEncoded(), "AES");
@@ -27,6 +29,12 @@ public class AESUtil {
         byte[] iv = new byte[16];
         new SecureRandom().nextBytes(iv);
         return new IvParameterSpec(iv);
+    }
+
+    public static byte[] generateSalt(int bytes) {
+        byte[] salt = new byte[bytes];
+        new SecureRandom().nextBytes(salt);
+        return salt;
     }
 
     public static String encrypt(String algorithm, String input, SecretKey key,

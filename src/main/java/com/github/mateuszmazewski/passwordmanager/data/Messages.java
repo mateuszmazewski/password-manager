@@ -10,4 +10,5 @@ public class Messages {
     public static final String AUTHENTICATED_USER_ERROR = "Nieoczekiwany błąd. Nie udało się pobrać aktualnie zalogowanego użytkownika.";
     public static final String INVALID_MASTER_PASSWORD = "Podane hasło główne jest nieprawidłowe";
     public static final String MASTER_PASSWORD_REQUIRED = "Ta operacja wymaga podania hasła głównego";
+    public static final String SAVE_ERROR = "Wystąpił nieznany błąd zapisu.";
 }

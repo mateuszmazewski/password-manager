@@ -135,6 +135,8 @@ public class VaultEntityForm extends EntityForm {
     private void performAction(Action action, String masterPassword) {
         if (action == Action.SAVE) {
             //TODO - encrypt and save
+            vaultEntity.setUserId(authenticatedUser.getId());
+            fireEvent(new SaveEvent(this, vaultEntity));
         } else if (action == Action.DELETE) {
             fireEvent(new DeleteEvent(this, vaultEntity));
         } else if (action == Action.DECRYPT) {

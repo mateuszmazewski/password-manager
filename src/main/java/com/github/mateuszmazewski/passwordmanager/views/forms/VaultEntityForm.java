@@ -53,10 +53,7 @@ public class VaultEntityForm extends EntityForm {
         saveButton.addClickListener(e -> validateAndSave());
         deleteButton.addClickListener(e -> validateMasterPasswordDialog(Action.DELETE));
         cancelButton.addClickListener(e -> {
-            name.clear();
-            url.clear();
-            username.clear();
-            password.clear();
+            clearForm();
             fireEvent(new CloseEvent(this));
         });
     }
@@ -141,9 +138,10 @@ public class VaultEntityForm extends EntityForm {
         if (action == Action.SAVE) {
             save(masterPassword);
         } else if (action == Action.DELETE) {
+            clearForm();
             fireEvent(new DeleteEvent(this, vaultEntity));
         } else if (action == Action.DECRYPT) {
-            //TODO - decrypt and set visible
+            decrypt(masterPassword);
         }
     }
 
@@ -161,13 +159,37 @@ public class VaultEntityForm extends EntityForm {
             vaultEntity.setIv(Base64.getEncoder().encodeToString(ivParameterSpec.getIV()));
             vaultEntity.setUserId(authenticatedUser.getId());
             fireEvent(new SaveEvent(this, vaultEntity));
+            clearForm();
         } catch (Exception e) {
             Notification.show(Messages.SAVE_ERROR).addThemeVariants(NotificationVariant.LUMO_ERROR);
         }
+    }
+
+    private void decrypt(String masterPassword) {
+        try {
+            IvParameterSpec ivParameterSpec = new IvParameterSpec(Base64.getDecoder().decode(vaultEntity.getIv()));
+            byte[] salt = Base64.getDecoder().decode(vaultEntity.getSalt());
+
+            SecretKey key = AESUtil.getKeyFromPassword(masterPassword, new String(salt));
+            String algorithm = "AES/CBC/PKCS5Padding";
+            String decryptedPassword = AESUtil.decrypt(
+                    algorithm, vaultEntity.getEncryptedPassword(), key, ivParameterSpec);
+            password.setValue(decryptedPassword);
+            setVisible(true);
+        } catch (Exception e) {
+            Notification.show(Messages.DECRYPTION_ERROR).addThemeVariants(NotificationVariant.LUMO_ERROR);
+        }
+    }
+
+    private void clearForm() {
         name.clear();
         url.clear();
         username.clear();
         password.clear();
+
+        name.setInvalid(false);
+        url.setInvalid(false);
+        username.setInvalid(false);
         password.setInvalid(false);
     }
 

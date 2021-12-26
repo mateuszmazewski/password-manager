@@ -154,12 +154,11 @@ public class VaultView extends VerticalLayout {
         if (vaultEntity == null) {
             closeEditor();
         } else {
-            if (vaultEntity.getEncryptedPassword() == null || vaultEntity.getEncryptedPassword().isEmpty()) { // Adding new
-                form.setVaultEntity(vaultEntity);
+            form.setVaultEntity(vaultEntity);
+            if (vaultEntity.getEncryptedPassword() == null || vaultEntity.getEncryptedPassword().isEmpty()) { // Adding new entry
                 form.setVisible(true);
-            } else { // Editing existing
+            } else { // Editing existing entry
                 form.validateMasterPasswordDialog(VaultEntityForm.Action.DECRYPT);
-                form.setVaultEntity(vaultEntity);
             }
             addClassName("editing");
         }

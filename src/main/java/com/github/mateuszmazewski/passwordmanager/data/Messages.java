@@ -12,4 +12,5 @@ public class Messages {
     public static final String MASTER_PASSWORD_REQUIRED = "Ta operacja wymaga podania hasła głównego";
     public static final String SAVE_ERROR = "Wystąpił nieznany błąd zapisu.";
     public static final String INTEGRITY = "Nie można usunąć ze względu na więzy integralności.";
+    public static final String DECRYPTION_ERROR = "Wystąpił nieznany błąd podczas deszyfrowania.";
 }

@@ -138,8 +138,12 @@ public class VaultEntityForm extends EntityForm {
         if (action == Action.SAVE) {
             save(masterPassword);
         } else if (action == Action.DELETE) {
-            clearForm();
-            fireEvent(new DeleteEvent(this, vaultEntity));
+            if (vaultEntity != null
+                    && vaultEntity.getEncryptedPassword() != null
+                    && !vaultEntity.getEncryptedPassword().isEmpty()) {
+                clearForm();
+                fireEvent(new DeleteEvent(this, vaultEntity));
+            }
         } else if (action == Action.DECRYPT) {
             decrypt(masterPassword);
         }
@@ -181,7 +185,7 @@ public class VaultEntityForm extends EntityForm {
         }
     }
 
-    private void clearForm() {
+    public void clearForm() {
         name.clear();
         url.clear();
         username.clear();
@@ -191,6 +195,10 @@ public class VaultEntityForm extends EntityForm {
         url.setInvalid(false);
         username.setInvalid(false);
         password.setInvalid(false);
+    }
+
+    public void setDeleteButtonVisible(boolean visible) {
+        deleteButton.setVisible(visible);
     }
 
 }

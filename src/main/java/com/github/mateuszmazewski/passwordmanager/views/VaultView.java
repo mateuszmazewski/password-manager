@@ -120,6 +120,7 @@ public class VaultView extends VerticalLayout {
 
     private void addVaultEntity() {
         grid.asSingleSelect().clear();
+        form.clearForm();
         editVaultEntity(new VaultEntity());
     }
 
@@ -141,7 +142,11 @@ public class VaultView extends VerticalLayout {
                 new ComponentRenderer<>(
                         vaultEntity -> {
                             Button button = new Button("Deszyfruj");
-                            button.addClickListener(e -> editVaultEntity(vaultEntity));
+                            button.addClickListener(e -> {
+                                form.setVisible(false);
+                                form.clearForm();
+                                editVaultEntity(vaultEntity);
+                            });
                             return button;
                         }
                 )
@@ -157,8 +162,10 @@ public class VaultView extends VerticalLayout {
             form.setVaultEntity(vaultEntity);
             if (vaultEntity.getEncryptedPassword() == null || vaultEntity.getEncryptedPassword().isEmpty()) { // Adding new entry
                 form.setVisible(true);
+                form.setDeleteButtonVisible(false);
             } else { // Editing existing entry
                 form.validateMasterPasswordDialog(VaultEntityForm.Action.DECRYPT);
+                form.setDeleteButtonVisible(true);
             }
             addClassName("editing");
         }

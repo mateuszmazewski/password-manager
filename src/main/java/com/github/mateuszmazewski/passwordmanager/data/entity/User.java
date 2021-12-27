@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User extends AbstractEntity {
@@ -15,16 +16,18 @@ public class User extends AbstractEntity {
     public final static int MIN_PASSWORD_LENGTH = 8;
     @Column(unique = true)
     private String username;
-    @JsonIgnore
-    @NotBlank
-    private String hashedPassword;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<Role> roles;
     @Email
     @NotBlank
     private String email;
+    @JsonIgnore
+    @NotBlank
+    private String hashedPassword;
     @NotBlank
     private String hashedMasterPassword;
+    @NotNull
+    private boolean active;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<Role> roles;
 
     public String getUsername() {
         return username;
@@ -32,22 +35,6 @@ public class User extends AbstractEntity {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getHashedPassword() {
-        return hashedPassword;
-    }
-
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
     }
 
     public String getEmail() {
@@ -58,12 +45,36 @@ public class User extends AbstractEntity {
         this.email = email;
     }
 
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
     public String getHashedMasterPassword() {
         return hashedMasterPassword;
     }
 
     public void setHashedMasterPassword(String hashedMasterPassword) {
         this.hashedMasterPassword = hashedMasterPassword;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
 }

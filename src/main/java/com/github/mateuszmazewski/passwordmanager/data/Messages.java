@@ -13,4 +13,5 @@ public class Messages {
     public static final String SAVE_ERROR = "Wystąpił nieznany błąd zapisu.";
     public static final String INTEGRITY = "Nie można usunąć ze względu na więzy integralności.";
     public static final String DECRYPTION_ERROR = "Wystąpił nieznany błąd podczas deszyfrowania.";
+    public static final String COPIED_TO_CLIPBOARD = "Skopiowano hasło do schowka.";
 }

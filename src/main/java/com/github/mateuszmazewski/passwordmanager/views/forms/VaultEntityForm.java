@@ -1,6 +1,7 @@
 package com.github.mateuszmazewski.passwordmanager.views.forms;
 
 import com.github.mateuszmazewski.passwordmanager.data.Messages;
+import com.github.mateuszmazewski.passwordmanager.security.Util;
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
 import com.github.mateuszmazewski.passwordmanager.data.entity.VaultEntity;
 import com.github.mateuszmazewski.passwordmanager.security.AESUtil;
@@ -8,12 +9,15 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.progressbar.ProgressBar;
+import com.vaadin.flow.component.progressbar.ProgressBarVariant;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -39,6 +43,7 @@ public class VaultEntityForm extends EntityForm {
     private final PasswordEncoder passwordEncoder;
     private final User authenticatedUser;
     Button copyButton = new Button("Kopiuj hasło do schowka", VaadinIcon.COPY.create());
+    ProgressBar passwordStrength = new ProgressBar();
 
     public enum Action {
         SAVE,
@@ -52,11 +57,22 @@ public class VaultEntityForm extends EntityForm {
         this.authenticatedUser = authenticatedUser;
         binder.bindInstanceFields(this);
 
-        password.addValueChangeListener(e -> validatePassword());
+        password.addValueChangeListener(e -> Util.validatePassword(password, passwordStrength, false));
 
         copyButton.addClickListener(e -> copyToClipboard(password.getValue()));
+        passwordStrength.setMin(Util.PASSWORD_STRENGTH_MIN);
+        passwordStrength.setMax(Util.PASSWORD_STRENGTH_MAX);
 
-        add(name, url, username, password, copyButton, createButtonLayout());
+        add(
+                name,
+                url,
+                username,
+                password,
+                new Label("Siła hasła"),
+                passwordStrength,
+                copyButton,
+                createButtonLayout()
+        );
         saveButton.addClickListener(e -> validateAndSave());
         deleteButton.addClickListener(e -> validateMasterPasswordDialog(Action.DELETE));
         cancelButton.addClickListener(e -> {
@@ -73,23 +89,11 @@ public class VaultEntityForm extends EntityForm {
     private void validateAndSave() {
         try {
             binder.writeBean(vaultEntity);
-            if (validatePassword()) {
+            if (Util.validatePassword(password, passwordStrength, false)) {
                 validateMasterPasswordDialog(Action.SAVE);
             }
         } catch (ValidationException e) {
             e.printStackTrace();
-        }
-    }
-
-    private boolean validatePassword() {
-        if (password.getValue() != null && !password.getValue().isEmpty()) {
-            password.setInvalid(false);
-            password.setErrorMessage(null);
-            return true;
-        } else {
-            password.setInvalid(true);
-            password.setErrorMessage(Messages.EMPTY);
-            return false;
         }
     }
 
@@ -197,6 +201,8 @@ public class VaultEntityForm extends EntityForm {
         url.clear();
         username.clear();
         password.clear();
+        passwordStrength.setValue(0);
+        passwordStrength.removeThemeVariants(ProgressBarVariant.LUMO_SUCCESS);
 
         name.setInvalid(false);
         url.setInvalid(false);

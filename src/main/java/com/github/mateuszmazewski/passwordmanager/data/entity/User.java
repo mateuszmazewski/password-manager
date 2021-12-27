@@ -5,10 +5,7 @@ import com.github.mateuszmazewski.passwordmanager.data.AbstractEntity;
 import com.github.mateuszmazewski.passwordmanager.data.Role;
 
 import java.util.Set;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -16,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 public class User extends AbstractEntity {
 
     public final static int MIN_PASSWORD_LENGTH = 8;
+    @Column(unique = true)
     private String username;
     private String name;
     @JsonIgnore

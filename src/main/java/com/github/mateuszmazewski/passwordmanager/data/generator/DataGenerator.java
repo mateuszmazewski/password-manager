@@ -1,9 +1,7 @@
 package com.github.mateuszmazewski.passwordmanager.data.generator;
 
 import com.github.mateuszmazewski.passwordmanager.data.Role;
-import com.github.mateuszmazewski.passwordmanager.data.entity.SamplePerson;
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
-import com.github.mateuszmazewski.passwordmanager.data.repository.SamplePersonRepository;
 import com.github.mateuszmazewski.passwordmanager.data.repository.UserRepository;
 import com.vaadin.exampledata.DataType;
 import com.vaadin.exampledata.ExampleDataGenerator;
@@ -22,7 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringComponent
 public class DataGenerator {
-
+/*
     @Bean
     public CommandLineRunner loadData(PasswordEncoder passwordEncoder, SamplePersonRepository samplePersonRepository,
                                       UserRepository userRepository) {
@@ -74,5 +72,5 @@ public class DataGenerator {
             logger.info("Generated demo data");
         };
     }
-
+*/
 }

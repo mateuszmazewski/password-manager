@@ -3,20 +3,14 @@ package com.github.mateuszmazewski.passwordmanager.views;
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
 import com.github.mateuszmazewski.passwordmanager.security.AuthenticatedUser;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.avatar.Avatar;
-import com.vaadin.flow.component.contextmenu.ContextMenu;
-import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.H1;
-import com.vaadin.flow.component.html.Header;
-import com.vaadin.flow.component.html.ListItem;
-import com.vaadin.flow.component.html.Nav;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.html.UnorderedList;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -78,20 +72,17 @@ public class MainLayout extends AppLayout {
         if (maybeUser.isPresent()) {
             User user = maybeUser.get();
 
-            Avatar avatar = new Avatar(user.getName(), user.getProfilePictureUrl());
-            avatar.addClassNames("me-xs");
+            Button logoutButton = new Button("Wyloguj się");
+            logoutButton.addClickListener(e -> authenticatedUser.logout());
 
-            ContextMenu userMenu = new ContextMenu(avatar);
-            userMenu.setOpenOnClick(true);
-            userMenu.addItem("Logout", e -> authenticatedUser.logout());
+            Span username = new Span("Zalogowano jako: " + user.getUsername());
+            username.addClassNames("font-medium", "text-s", "text-secondary", "px-m");
 
-            Span name = new Span(user.getName());
-            name.addClassNames("font-medium", "text-s", "text-secondary");
-
-            layout.add(avatar, name);
+            layout.add(username, logoutButton);
         } else {
-            Anchor loginLink = new Anchor("login", "Sign in");
-            layout.add(loginLink);
+            Button loginButton = new Button("Zaloguj się");
+            loginButton.addClickListener(e -> UI.getCurrent().getPage().setLocation("login"));
+            layout.add(loginButton);
         }
 
         Nav nav = new Nav();
@@ -113,9 +104,8 @@ public class MainLayout extends AppLayout {
 
     private List<RouterLink> createLinks() {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{ //
-                new MenuItemInfo("List", "la la-key", ListView.class), //
                 new MenuItemInfo("Sejf", "la la-key", VaultView.class),
-                new MenuItemInfo("About", "la la-info-circle", AboutView.class), //
+                new MenuItemInfo("Informacje", "la la-info-circle", AboutView.class), //
 
         };
         List<RouterLink> links = new ArrayList<>();

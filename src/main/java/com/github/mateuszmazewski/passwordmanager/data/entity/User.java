@@ -15,14 +15,11 @@ public class User extends AbstractEntity {
     public final static int MIN_PASSWORD_LENGTH = 8;
     @Column(unique = true)
     private String username;
-    private String name;
     @JsonIgnore
     @NotBlank
     private String hashedPassword;
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
-    @Lob
-    private String profilePictureUrl;
     @Email
     @NotBlank
     private String email;
@@ -35,14 +32,6 @@ public class User extends AbstractEntity {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getHashedPassword() {
@@ -59,14 +48,6 @@ public class User extends AbstractEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
-    }
-
-    public String getProfilePictureUrl() {
-        return profilePictureUrl;
-    }
-
-    public void setProfilePictureUrl(String profilePictureUrl) {
-        this.profilePictureUrl = profilePictureUrl;
     }
 
     public String getEmail() {

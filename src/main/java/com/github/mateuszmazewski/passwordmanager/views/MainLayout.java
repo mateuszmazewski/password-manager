@@ -29,9 +29,9 @@ public class MainLayout extends AppLayout {
 
     public static class MenuItemInfo {
 
-        private String text;
-        private String iconClass;
-        private Class<? extends Component> view;
+        private final String text;
+        private final String iconClass;
+        private final Class<? extends Component> view;
 
         public MenuItemInfo(String text, String iconClass, Class<? extends Component> view) {
             this.text = text;
@@ -53,8 +53,8 @@ public class MainLayout extends AppLayout {
 
     }
 
-    private AuthenticatedUser authenticatedUser;
-    private AccessAnnotationChecker accessChecker;
+    private final AuthenticatedUser authenticatedUser;
+    private final AccessAnnotationChecker accessChecker;
 
     public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
         this.authenticatedUser = authenticatedUser;
@@ -70,7 +70,7 @@ public class MainLayout extends AppLayout {
         Div layout = new Div();
         layout.addClassNames("flex", "h-xl", "items-center", "px-l");
 
-        H1 appName = new H1("Menadżer haseł");
+        H1 appName = new H1("Menedżer haseł");
         appName.addClassNames("my-0", "me-auto", "text-l");
         layout.add(appName);
 
@@ -83,9 +83,7 @@ public class MainLayout extends AppLayout {
 
             ContextMenu userMenu = new ContextMenu(avatar);
             userMenu.setOpenOnClick(true);
-            userMenu.addItem("Logout", e -> {
-                authenticatedUser.logout();
-            });
+            userMenu.addItem("Logout", e -> authenticatedUser.logout());
 
             Span name = new Span(user.getName());
             name.addClassNames("font-medium", "text-s", "text-secondary");

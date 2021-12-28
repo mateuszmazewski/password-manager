@@ -34,7 +34,6 @@ public class DataGenerator {
             user.setEmail("user@example.com");
             user.setHashedPassword(passwordEncoder.encode("user"));
             user.setHashedMasterPassword(passwordEncoder.encode("user"));
-            user.setActive(true);
             user.setRoles(Collections.singleton(Role.USER));
             userRepository.save(user);
             User admin = new User();
@@ -42,7 +41,6 @@ public class DataGenerator {
             admin.setEmail("admin@example.com");
             admin.setHashedPassword(passwordEncoder.encode("admin"));
             admin.setHashedMasterPassword(passwordEncoder.encode("admin"));
-            admin.setActive(true);
             admin.setRoles(Stream.of(Role.USER, Role.ADMIN).collect(Collectors.toSet()));
             userRepository.save(admin);
 

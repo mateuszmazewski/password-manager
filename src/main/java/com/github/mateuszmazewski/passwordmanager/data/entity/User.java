@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.mateuszmazewski.passwordmanager.data.AbstractEntity;
 import com.github.mateuszmazewski.passwordmanager.data.Role;
 
-import java.util.Set;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 public class User extends AbstractEntity {
@@ -24,8 +26,6 @@ public class User extends AbstractEntity {
     private String hashedPassword;
     @NotBlank
     private String hashedMasterPassword;
-    @NotNull
-    private boolean active;
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
@@ -59,14 +59,6 @@ public class User extends AbstractEntity {
 
     public void setHashedMasterPassword(String hashedMasterPassword) {
         this.hashedMasterPassword = hashedMasterPassword;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public Set<Role> getRoles() {

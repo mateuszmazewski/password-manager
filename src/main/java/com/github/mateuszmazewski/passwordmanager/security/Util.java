@@ -5,6 +5,8 @@ import com.vaadin.flow.component.progressbar.ProgressBar;
 import com.vaadin.flow.component.progressbar.ProgressBarVariant;
 import com.vaadin.flow.component.textfield.PasswordField;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static com.github.mateuszmazewski.passwordmanager.data.entity.User.MIN_PASSWORD_LENGTH;
 
 public class Util {
@@ -81,5 +83,13 @@ public class Util {
             passwordField.setErrorMessage(Messages.PASSWORD_NOT_STRONG);
             return false;
         }
+    }
+
+    public static String getClientIP(HttpServletRequest request) {
+        String xfHeader = request.getHeader("X-Forwarded-For");
+        if (xfHeader == null) {
+            return request.getRemoteAddr();
+        }
+        return xfHeader.split(",")[0];
     }
 }

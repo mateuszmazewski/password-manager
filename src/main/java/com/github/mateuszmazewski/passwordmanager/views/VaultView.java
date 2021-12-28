@@ -26,8 +26,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.annotation.security.PermitAll;
 
 @PageTitle("Sejf")
-@Route(value = "vault", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+@Route(value = "/", layout = MainLayout.class)
 @PermitAll
 public class VaultView extends VerticalLayout {
     Grid<VaultEntity> grid = new Grid<>(VaultEntity.class);

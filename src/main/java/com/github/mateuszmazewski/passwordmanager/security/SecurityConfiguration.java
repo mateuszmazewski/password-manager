@@ -16,9 +16,10 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 
     public static final String LOGOUT_URL = "/";
 
+    // strength == 10 -> 2^10 rounds
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 
     @Override

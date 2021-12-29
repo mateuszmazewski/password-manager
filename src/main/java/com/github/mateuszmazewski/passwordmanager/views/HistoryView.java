@@ -21,16 +21,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@PageTitle("Połączenia do konta")
-@Route(value = "connections", layout = MainLayout.class)
+@PageTitle("Historia logowań")
+@Route(value = "history", layout = MainLayout.class)
 @PermitAll
-public class ConnectionsView extends VerticalLayout {
+public class HistoryView extends VerticalLayout {
     Grid<Connection> grid = new Grid<>(Connection.class);
     TextField filterIp = new TextField("IP");
     private final ConnectionService service;
     private final User authenticatedUser;
 
-    public ConnectionsView(ConnectionService service, AuthenticatedUser authenticatedUser) {
+    public HistoryView(ConnectionService service, AuthenticatedUser authenticatedUser) {
         this.service = service;
         setSizeFull();
 

@@ -67,7 +67,7 @@ public class RegisterView extends HorizontalLayout {
         masterPasswordStrength.setMax(Util.PASSWORD_STRENGTH_MAX);
 
         registerButton.addClickListener(e -> validateAndSave());
-        loginButton.addClickListener(e -> UI.getCurrent().getPage().setLocation("login"));
+        loginButton.addClickListener(e -> UI.getCurrent().navigate(LoginView.class));
 
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);

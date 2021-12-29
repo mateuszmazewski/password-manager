@@ -39,7 +39,7 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
         setI18n(i18n);
 
         setForgotPasswordButtonVisible(true);
-        addForgotPasswordListener(e -> UI.getCurrent().getPage().setLocation("register"));
+        addForgotPasswordListener(e -> UI.getCurrent().navigate(RegisterView.class));
         setOpened(true);
     }
 

@@ -81,7 +81,7 @@ public class MainLayout extends AppLayout {
             layout.add(username, logoutButton);
         } else {
             Button loginButton = new Button("Zaloguj się");
-            loginButton.addClickListener(e -> UI.getCurrent().getPage().setLocation("login"));
+            loginButton.addClickListener(e -> UI.getCurrent().navigate(LoginView.class));
             layout.add(loginButton);
         }
 

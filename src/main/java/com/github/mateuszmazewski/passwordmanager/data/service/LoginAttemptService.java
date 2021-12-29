@@ -1,6 +1,9 @@
 package com.github.mateuszmazewski.passwordmanager.data.service;
 
+import com.github.mateuszmazewski.passwordmanager.data.entity.Connection;
 import com.github.mateuszmazewski.passwordmanager.data.entity.LoginAttempt;
+import com.github.mateuszmazewski.passwordmanager.data.entity.User;
+import com.github.mateuszmazewski.passwordmanager.data.repository.ConnectionRepository;
 import com.github.mateuszmazewski.passwordmanager.data.repository.LoginAttemptRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,22 +13,39 @@ import java.time.LocalDateTime;
 @Service
 public class LoginAttemptService {
 
-    private final LoginAttemptRepository repository;
+    private final LoginAttemptRepository loginAttemptRepository;
+    private final ConnectionRepository connectionRepository;
     public final static int MAX_ATTEMPTS = 10;
 
-    public LoginAttemptService(@Autowired LoginAttemptRepository repository) {
-        this.repository = repository;
+    public LoginAttemptService(@Autowired LoginAttemptRepository loginAttemptRepository,
+                               @Autowired ConnectionRepository connectionRepository) {
+        this.loginAttemptRepository = loginAttemptRepository;
+        this.connectionRepository = connectionRepository;
     }
 
-    public void loginSucceeded(String ip) {
-        LoginAttempt attempt = repository.findByIp(ip);
+    public void loginSucceeded(String ip, User authenticatedUser) {
+        LoginAttempt attempt = loginAttemptRepository.findByIp(ip);
         if (attempt != null) {
-            repository.deleteById(attempt.getId());
+            loginAttemptRepository.deleteById(attempt.getId());
+        }
+
+        if (authenticatedUser != null) {
+            Connection connection = connectionRepository.findByUserIdAndIp(authenticatedUser.getId(), ip);
+            if (connection == null) {
+                Connection newConnection = new Connection();
+                newConnection.setUserId(authenticatedUser.getId());
+                newConnection.setIp(ip);
+                newConnection.setLastConnectionDate(LocalDateTime.now());
+                connectionRepository.save(newConnection);
+            } else {
+                connection.setLastConnectionDate(LocalDateTime.now());
+                connectionRepository.save(connection);
+            }
         }
     }
 
     public void loginFailed(String ip) {
-        LoginAttempt attempt = repository.findByIp(ip);
+        LoginAttempt attempt = loginAttemptRepository.findByIp(ip);
         if (attempt == null) {
             attempt = new LoginAttempt();
             attempt.setIp(ip);
@@ -40,15 +60,15 @@ public class LoginAttemptService {
             }
         }
 
-        repository.save(attempt);
+        loginAttemptRepository.save(attempt);
     }
 
     public boolean isBlocked(String ip) {
-        LoginAttempt attempt = repository.findByIp(ip);
+        LoginAttempt attempt = loginAttemptRepository.findByIp(ip);
         if (attempt == null || attempt.getBlockedUntil() == null) {
             return false;
         } else if (LocalDateTime.now().isAfter(attempt.getBlockedUntil())) {
-            repository.deleteById(attempt.getId());
+            loginAttemptRepository.deleteById(attempt.getId());
             return false;
         }
 
@@ -56,6 +76,6 @@ public class LoginAttemptService {
     }
 
     public LoginAttempt findByIp(String ip) {
-        return repository.findByIp(ip);
+        return loginAttemptRepository.findByIp(ip);
     }
 }

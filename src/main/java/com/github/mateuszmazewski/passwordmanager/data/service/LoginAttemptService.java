@@ -23,7 +23,7 @@ public class LoginAttemptService {
         this.connectionRepository = connectionRepository;
     }
 
-    public void loginSucceeded(String ip, User authenticatedUser) {
+    public void loginSucceeded(String ip, User authenticatedUser, String userAgent) {
         LoginAttempt attempt = loginAttemptRepository.findByIp(ip);
         if (attempt != null) {
             loginAttemptRepository.deleteById(attempt.getId());
@@ -35,9 +35,11 @@ public class LoginAttemptService {
                 Connection newConnection = new Connection();
                 newConnection.setUserId(authenticatedUser.getId());
                 newConnection.setIp(ip);
+                newConnection.setUserAgent(userAgent);
                 newConnection.setLastConnectionDate(LocalDateTime.now());
                 connectionRepository.save(newConnection);
             } else {
+                connection.setUserAgent(userAgent);
                 connection.setLastConnectionDate(LocalDateTime.now());
                 connectionRepository.save(connection);
             }

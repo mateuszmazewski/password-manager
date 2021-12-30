@@ -14,6 +14,7 @@ public class Connection extends AbstractEntity {
     private Integer userId;
     @NotBlank
     private String ip;
+    private String userAgent;
     private LocalDateTime lastConnectionDate;
 
     public Integer getUserId() {
@@ -30,6 +31,14 @@ public class Connection extends AbstractEntity {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
     }
 
     public LocalDateTime getLastConnectionDate() {

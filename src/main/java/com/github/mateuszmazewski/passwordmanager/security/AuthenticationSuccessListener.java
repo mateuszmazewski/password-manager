@@ -27,6 +27,7 @@ public class AuthenticationSuccessListener implements
     @Override
     public void onApplicationEvent(final AuthenticationSuccessEvent e) {
         final String xfHeader = request.getHeader("X-Forwarded-For");
+        final String userAgent = request.getHeader("User-Agent");
 
         Authentication authentication = e.getAuthentication();
         User authenticatedUser = null;
@@ -35,9 +36,9 @@ public class AuthenticationSuccessListener implements
         }
 
         if (xfHeader == null) {
-            loginAttemptService.loginSucceeded(request.getRemoteAddr(), authenticatedUser);
+            loginAttemptService.loginSucceeded(request.getRemoteAddr(), authenticatedUser, userAgent);
         } else {
-            loginAttemptService.loginSucceeded(xfHeader.split(",")[0], authenticatedUser);
+            loginAttemptService.loginSucceeded(xfHeader.split(",")[0], authenticatedUser, userAgent);
         }
     }
 }

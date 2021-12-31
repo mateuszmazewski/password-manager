@@ -1,6 +1,7 @@
 package com.github.mateuszmazewski.passwordmanager.views;
 
 import com.github.mateuszmazewski.passwordmanager.data.Messages;
+import com.github.mateuszmazewski.passwordmanager.data.Role;
 import com.github.mateuszmazewski.passwordmanager.security.Util;
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
 import com.github.mateuszmazewski.passwordmanager.data.service.UserService;
@@ -23,6 +24,8 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Collections;
 
 @PageTitle("Rejestracja")
 @Route(value = "register", layout = MainLayout.class)
@@ -109,6 +112,7 @@ public class RegisterView extends HorizontalLayout {
             if (passwordValid && masterPasswordValid) {
                 user.setHashedPassword(passwordEncoder.encode(password.getValue()));
                 user.setHashedMasterPassword(passwordEncoder.encode(masterPassword.getValue()));
+                user.setRoles(Collections.singleton(Role.USER));
                 service.update(user);
                 successDialog.open();
             }

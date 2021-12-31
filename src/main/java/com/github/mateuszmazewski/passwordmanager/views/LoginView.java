@@ -4,8 +4,11 @@ import com.github.mateuszmazewski.passwordmanager.data.entity.LoginAttempt;
 import com.github.mateuszmazewski.passwordmanager.data.service.LoginAttemptService;
 import com.github.mateuszmazewski.passwordmanager.security.Util;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.login.LoginI18n;
-import com.vaadin.flow.component.login.LoginOverlay;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -17,15 +20,17 @@ import java.time.format.DateTimeFormatter;
 
 @PageTitle("Login")
 @Route(value = "login")
-public class LoginView extends LoginOverlay implements BeforeEnterObserver {
+public class LoginView extends VerticalLayout implements BeforeEnterObserver {
+    private final LoginForm form = new LoginForm();
     private final HttpServletRequest request;
     private final LoginAttemptService service;
     private final LoginI18n i18n = LoginI18n.createDefault();
+    Button registerButton = new Button("Zarejestruj się");
 
     public LoginView(@Autowired HttpServletRequest request, @Autowired LoginAttemptService service) {
         this.request = request;
         this.service = service;
-        setAction("login");
+        form.setAction("login");
 
         i18n.setHeader(new LoginI18n.Header());
         i18n.getHeader().setTitle("Menadżer haseł");
@@ -35,12 +40,20 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
         i18n.getForm().setUsername("Nazwa użytkownika");
         i18n.getForm().setPassword("Hasło");
         i18n.getForm().setSubmit("Zaloguj się");
-        i18n.getForm().setForgotPassword("Zarejestruj się");
-        setI18n(i18n);
+        i18n.getForm().setForgotPassword("Nie pamiętam hasła");
+        form.setI18n(i18n);
 
-        setForgotPasswordButtonVisible(true);
-        addForgotPasswordListener(e -> UI.getCurrent().navigate(RegisterView.class));
-        setOpened(true);
+        registerButton.addClickListener(e -> UI.getCurrent().navigate(RegisterView.class));
+
+        form.setForgotPasswordButtonVisible(true);
+        form.addForgotPasswordListener(e -> UI.getCurrent().navigate(PasswordRecoveryView.class));
+
+        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
+        add(
+                form,
+                new H2("Nie masz jeszcze konta?"),
+                registerButton
+        );
     }
 
     @Override
@@ -67,8 +80,8 @@ public class LoginView extends LoginOverlay implements BeforeEnterObserver {
                 i18n.getErrorMessage().setMessage("Upewnij się, że podane dane są prawidłowe i spróbuj ponownie." +
                         " Pozostałe próby: " + attemptsRemaining + ".");
             }
-            setI18n(i18n);
-            setError(true);
+            form.setI18n(i18n);
+            form.setError(true);
         }
     }
 

@@ -14,4 +14,5 @@ public class Messages {
     public static final String INTEGRITY = "Nie można usunąć ze względu na więzy integralności.";
     public static final String DECRYPTION_ERROR = "Wystąpił nieznany błąd podczas deszyfrowania.";
     public static final String COPIED_TO_CLIPBOARD = "Skopiowano hasło do schowka.";
+    public static final String CODE_NO_LONGER_VALID = "Upłynął czas na wprowadzenie kodu. Wygeneruj nowy kod.";
 }

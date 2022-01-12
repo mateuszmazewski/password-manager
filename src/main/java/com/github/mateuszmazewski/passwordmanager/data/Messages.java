@@ -15,4 +15,5 @@ public class Messages {
     public static final String DECRYPTION_ERROR = "Wystąpił nieznany błąd podczas deszyfrowania.";
     public static final String COPIED_TO_CLIPBOARD = "Skopiowano hasło do schowka.";
     public static final String CODE_NO_LONGER_VALID = "Upłynął czas na wprowadzenie kodu. Wygeneruj nowy kod.";
+    public static final String URL_FORMAT = "Adres musi zaczynać się od \"http://\" lub \"https://\".";
 }

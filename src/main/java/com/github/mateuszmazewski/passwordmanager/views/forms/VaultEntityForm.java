@@ -63,6 +63,12 @@ public class VaultEntityForm extends EntityForm {
         passwordStrength.setMin(Util.PASSWORD_STRENGTH_MIN);
         passwordStrength.setMax(Util.PASSWORD_STRENGTH_MAX);
 
+        binder.forField(url)
+                .withValidator(
+                        url -> url == null || url.isEmpty() || url.startsWith("http://") || url.startsWith("https://"),
+                        Messages.URL_FORMAT)
+                .bind(VaultEntity::getUrl, VaultEntity::setUrl);
+
         add(
                 name,
                 url,

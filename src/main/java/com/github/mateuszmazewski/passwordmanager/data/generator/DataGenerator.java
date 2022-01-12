@@ -1,7 +1,5 @@
 package com.github.mateuszmazewski.passwordmanager.data.generator;
 
-import com.github.mateuszmazewski.passwordmanager.data.Role;
-import com.github.mateuszmazewski.passwordmanager.data.entity.User;
 import com.github.mateuszmazewski.passwordmanager.data.repository.UserRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.slf4j.Logger;
@@ -9,10 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Collections;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @SpringComponent
 public class DataGenerator {
@@ -22,11 +16,12 @@ public class DataGenerator {
                                       UserRepository userRepository) {
         return args -> {
             Logger logger = LoggerFactory.getLogger(getClass());
+/*
             if (userRepository.count() != 0L) {
                 logger.info("Using existing database");
+                logger.info("App is ready");
                 return;
             }
-
             logger.info("Generating demo data");
             logger.info("... generating 2 User entities...");
             User user = new User();
@@ -45,6 +40,9 @@ public class DataGenerator {
             userRepository.save(admin);
 
             logger.info("Generated demo data");
+ */
+            logger.info("App is ready");
+            logger.info("Go to https://localhost:8443 or http://localhost:8080 (it will redirect you to https anyway)");
         };
     }
 

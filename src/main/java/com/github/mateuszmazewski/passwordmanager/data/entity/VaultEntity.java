@@ -1,6 +1,7 @@
 package com.github.mateuszmazewski.passwordmanager.data.entity;
 
 import com.github.mateuszmazewski.passwordmanager.data.AbstractEntity;
+import com.github.mateuszmazewski.passwordmanager.data.Messages;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +13,7 @@ public class VaultEntity extends AbstractEntity {
     @NotNull
     private Integer userId;
 
-    @NotBlank
+    @NotBlank(message = Messages.EMPTY)
     private String name;
 
     private String url;

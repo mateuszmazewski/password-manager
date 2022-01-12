@@ -120,13 +120,14 @@ public class PasswordRecoveryView extends HorizontalLayout {
         cancelButton.addClickListener(e -> codeDialog.close());
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
-        VerticalLayout dialogLayout = new VerticalLayout(
+        FormLayout formLayout = new FormLayout(
                 new Label(info),
                 codeField,
                 new HorizontalLayout(okButton, cancelButton)
         );
-        dialogLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        codeDialog.add(dialogLayout);
+        formLayout.setWidth("25em");
+        formLayout.getStyle().set("text-align", "center");
+        codeDialog.add(formLayout);
         codeDialog.setCloseOnEsc(false);
         codeDialog.setCloseOnOutsideClick(false);
 
@@ -184,7 +185,7 @@ public class PasswordRecoveryView extends HorizontalLayout {
         username.setEnabled(false);
         email.setValue(user.getEmail());
         email.setEnabled(false);
-        VerticalLayout dialogLayout = new VerticalLayout();
+        FormLayout formLayout = new FormLayout();
 
         passwordField.addValueChangeListener(e -> Util.validatePassword(passwordField, passwordStrength, true));
         passwordStrength.setMin(Util.PASSWORD_STRENGTH_MIN);
@@ -194,13 +195,14 @@ public class PasswordRecoveryView extends HorizontalLayout {
         cancelButton.addClickListener(e -> setPasswordDialog.close());
         cancelButton.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
-        dialogLayout.add(
+        formLayout.add(
                 new H2("Kod poprawny. Teraz ustaw swoje nowe hasło."),
                 username, email, passwordField, passwordStrength,
                 new HorizontalLayout(setPasswordButton, cancelButton)
         );
-        dialogLayout.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        setPasswordDialog.add(dialogLayout);
+        formLayout.setWidth("25em");
+        formLayout.getStyle().set("text-align", "center");
+        setPasswordDialog.add(formLayout);
         setPasswordDialog.setCloseOnOutsideClick(false);
         setPasswordDialog.setCloseOnEsc(false);
 

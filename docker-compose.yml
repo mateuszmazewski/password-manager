@@ -1,0 +1,48 @@
+version: '2.1'
+services:
+  mysql:
+    image: mysql:8.0.26
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'passwordmanagerdb'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password123'
+      MYSQL_ROOT_PASSWORD: 'password123'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      # Opens port 3306 on the container
+      - '3306'
+      # Where the data will be persisted
+    volumes:
+      - mysql:/var/lib/mysql
+
+  app:
+    depends_on:
+      mysql:
+        # Wait for MySQL to initialize the DB before running the app
+        condition: service_healthy
+    # Build app container using Dockerfile
+    build: ./
+    restart: on-failure
+    ports:
+      - '8080:8080'
+      - '8443:8443'
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url"  : "jdbc:mysql://mysql:3306/passwordmanagerdb",
+        "spring.datasource.username" : "user",
+        "spring.datasource.password" : "password123",
+        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
+        "spring.jpa.hibernate.ddl-auto" : "update",
+
+        "server.ssl.key-store" : "classpath:passwordmanagercert.p12"
+      }'
+    volumes:
+      - .m2:/root/.m2
+    stdin_open: true
+    tty: true
+# Names our volume
+volumes:
+  mysql:

@@ -37,7 +37,7 @@ public class PasswordRecoveryView extends HorizontalLayout {
     private final PasswordEncoder passwordEncoder;
     Binder<User> binder = new BeanValidationBinder<>(User.class);
     FormLayout form = new FormLayout();
-    EmailField email = new EmailField("E-mail");
+    TextField username = new TextField("Nazwa użytkownika");
     Button recoverPasswordButton = new Button("Odzyskaj hasło");
     PasswordField passwordField = new PasswordField("Hasło do logowania");
     ProgressBar passwordStrength = new ProgressBar();
@@ -49,6 +49,15 @@ public class PasswordRecoveryView extends HorizontalLayout {
         this.service = service;
         this.passwordEncoder = passwordEncoder;
         binder.bindInstanceFields(this);
+
+        binder.forField(username)
+                .withValidator(
+                        username -> username != null && !username.isEmpty(),
+                        Messages.EMPTY)
+                .withValidator(
+                        username -> username == null || username.length() < 256,
+                        Messages.LENGTH_255)
+                .bind(User::getUsername, User::setUsername);
 
         setSizeFull();
         setJustifyContentMode(JustifyContentMode.CENTER);
@@ -77,10 +86,10 @@ public class PasswordRecoveryView extends HorizontalLayout {
         form.setWidth("25em");
         form.add(
                 new H2("Odzyskiwanie hasła"),
-                email, recoverPasswordButton, info
+                username, recoverPasswordButton, info
         );
 
-        email.setClearButtonVisible(true);
+        username.setClearButtonVisible(true);
         recoverPasswordButton.addClickListener(e -> recoverPassword());
         form.getStyle().set("text-align", "center");
     }
@@ -90,7 +99,7 @@ public class PasswordRecoveryView extends HorizontalLayout {
             return;
         }
 
-        User user = service.findByEmail(email.getValue());
+        User user = service.findByUsername(username.getValue());
         String code = null;
         LocalDateTime codeValidUntil = null;
         codeDialog = new Dialog();
@@ -98,7 +107,7 @@ public class PasswordRecoveryView extends HorizontalLayout {
         if (user != null) {
             code = generateCode();
             codeValidUntil = LocalDateTime.now().plusMinutes(10);
-            System.out.println("Normalnie wysłałbym wiadomość e-mail na adres " + email.getValue() + " z treścią:");
+            System.out.println("Normalnie wysłałbym wiadomość e-mail na adres " + user.getEmail() + " z treścią:");
             System.out.println("Wystąpiła próba zresetowania hasła do konta powiązanego z tym adresem e-mail w menedżerze haseł.");
             System.out.println("Jeśli chcesz zresetować hasło, wprowadź swój tajny kod: " + code);
             System.out.println("Kod jest ważny do: " + codeValidUntil.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
@@ -107,7 +116,7 @@ public class PasswordRecoveryView extends HorizontalLayout {
             // Normally, I would send e-mail here
         }
 
-        String info = "Jeśli istnieje użytkownik o podanym adresie e-mail, na ten adres otrzymasz tajny kod (ważny 10 minut)." +
+        String info = "Jeśli istnieje podany użytkownik, na powiązany z nim adres e-mail otrzymasz tajny kod (ważny 10 minut)." +
                 " Wprowadź go poniżej, aby ustawić nowe hasło.";
 
         TextField codeField = new TextField("Tajny kod");

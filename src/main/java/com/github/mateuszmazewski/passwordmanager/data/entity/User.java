@@ -19,7 +19,7 @@ public class User extends AbstractEntity {
     @Column(unique = true)
     private String username;
     @Email(message = Messages.EMAIL_INVALID)
-    @NotBlank
+    @NotBlank(message = Messages.EMPTY)
     private String email;
     @NotBlank
     private String hashedPassword;

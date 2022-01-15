@@ -57,6 +57,9 @@ public class RegisterView extends HorizontalLayout {
                         username -> username != null && !username.isEmpty(),
                         Messages.EMPTY)
                 .withValidator(
+                        username -> username != null && username.length() < 256,
+                        Messages.LENGTH_255)
+                .withValidator(
                         username -> username != null && !service.userExists(username),
                         Messages.USERNAME_NOT_UNIQUE)
                 .bind(User::getUsername, User::setUsername);

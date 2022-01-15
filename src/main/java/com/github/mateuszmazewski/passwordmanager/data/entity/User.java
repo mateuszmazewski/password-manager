@@ -1,7 +1,7 @@
 package com.github.mateuszmazewski.passwordmanager.data.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.mateuszmazewski.passwordmanager.data.AbstractEntity;
+import com.github.mateuszmazewski.passwordmanager.data.Messages;
 import com.github.mateuszmazewski.passwordmanager.data.Role;
 
 import javax.persistence.Column;
@@ -18,10 +18,9 @@ public class User extends AbstractEntity {
     public final static int MIN_PASSWORD_LENGTH = 8;
     @Column(unique = true)
     private String username;
-    @Email
+    @Email(message = Messages.EMAIL_INVALID)
     @NotBlank
     private String email;
-    @JsonIgnore
     @NotBlank
     private String hashedPassword;
     @NotBlank

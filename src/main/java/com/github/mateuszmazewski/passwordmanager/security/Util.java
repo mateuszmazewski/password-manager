@@ -74,7 +74,18 @@ public class Util {
             passwordField.setInvalid(true);
             passwordField.setErrorMessage(Messages.EMPTY);
             return false;
-        } else if (!requireStrongPassword || strength == 10) {
+        } else {
+            if (passwordField.getValue().length() > 255) {
+                passwordField.setInvalid(true);
+                passwordField.setErrorMessage(Messages.LENGTH_255);
+                return false;
+            } else {
+                passwordField.setInvalid(false);
+                passwordField.setErrorMessage(null);
+            }
+
+        }
+        if (!requireStrongPassword || strength == 10) {
             passwordField.setInvalid(false);
             passwordField.setErrorMessage(null);
             return true;

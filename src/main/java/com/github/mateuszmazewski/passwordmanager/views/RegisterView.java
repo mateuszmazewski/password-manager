@@ -7,6 +7,7 @@ import com.github.mateuszmazewski.passwordmanager.data.entity.User;
 import com.github.mateuszmazewski.passwordmanager.data.service.UserService;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H2;
@@ -77,6 +78,7 @@ public class RegisterView extends HorizontalLayout {
         passwordStrength.setMax(Util.PASSWORD_STRENGTH_MAX);
         masterPasswordStrength.setMax(Util.PASSWORD_STRENGTH_MAX);
 
+        registerButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         registerButton.addClickListener(e -> validateAndSave());
         loginButton.addClickListener(e -> {
             successDialog.close();

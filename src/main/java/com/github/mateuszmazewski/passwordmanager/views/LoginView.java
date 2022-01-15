@@ -71,14 +71,17 @@ public class LoginView extends VerticalLayout implements BeforeEnterObserver {
                         + attempt.getBlockedUntil().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             } else {
                 int attemptsRemaining;
+                String message = "Upewnij się, że podane dane są prawidłowe i spróbuj ponownie. ";
                 if (attempt != null) {
                     attemptsRemaining = LoginAttemptService.MAX_ATTEMPTS - attempt.getFailedAttempts();
+                    message += "Pozostałe próby: " + attemptsRemaining + ". Licznik zresetuje się: " +
+                            attempt.getResetCounterDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + ".";
                 } else {
                     attemptsRemaining = LoginAttemptService.MAX_ATTEMPTS;
+                    message += "Pozostałe próby: " + attemptsRemaining + ".";
                 }
                 i18n.getErrorMessage().setTitle("Nieprawidłowy login lub hasło");
-                i18n.getErrorMessage().setMessage("Upewnij się, że podane dane są prawidłowe i spróbuj ponownie." +
-                        " Pozostałe próby: " + attemptsRemaining + ".");
+                i18n.getErrorMessage().setMessage(message);
             }
             form.setI18n(i18n);
             form.setError(true);

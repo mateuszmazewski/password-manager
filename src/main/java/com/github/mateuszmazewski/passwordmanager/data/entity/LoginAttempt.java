@@ -13,6 +13,7 @@ public class LoginAttempt extends AbstractEntity {
     private String ip;
     private int failedAttempts;
     private LocalDateTime blockedUntil;
+    private LocalDateTime resetCounterDate;
 
     public String getIp() {
         return ip;
@@ -36,5 +37,13 @@ public class LoginAttempt extends AbstractEntity {
 
     public void setBlockedUntil(LocalDateTime blockedUntil) {
         this.blockedUntil = blockedUntil;
+    }
+
+    public LocalDateTime getResetCounterDate() {
+        return resetCounterDate;
+    }
+
+    public void setResetCounterDate(LocalDateTime resetCounterDate) {
+        this.resetCounterDate = resetCounterDate;
     }
 }

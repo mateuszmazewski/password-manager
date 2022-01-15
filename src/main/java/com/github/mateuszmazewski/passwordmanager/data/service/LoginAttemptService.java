@@ -25,9 +25,7 @@ public class LoginAttemptService {
 
     public void loginSucceeded(String ip, User authenticatedUser, String userAgent) {
         LoginAttempt attempt = loginAttemptRepository.findByIp(ip);
-        if (attempt != null) {
-            loginAttemptRepository.deleteById(attempt.getId());
-        }
+        checkAndDeleteAttemptIfNeeded(attempt);
 
         if (authenticatedUser != null) {
             Connection connection = connectionRepository.findByUserIdAndIp(authenticatedUser.getId(), ip);
@@ -48,17 +46,23 @@ public class LoginAttemptService {
 
     public void loginFailed(String ip) {
         LoginAttempt attempt = loginAttemptRepository.findByIp(ip);
+        boolean attemptDeleted = checkAndDeleteAttemptIfNeeded(attempt);
+        if (attemptDeleted) {
+            attempt = null;
+        }
+
         if (attempt == null) {
             attempt = new LoginAttempt();
             attempt.setIp(ip);
             attempt.setFailedAttempts(1);
             attempt.setBlockedUntil(null);
+            attempt.setResetCounterDate(LocalDateTime.now().plusHours(2));
         } else {
             int failedAttempts = attempt.getFailedAttempts() + 1;
             attempt.setFailedAttempts(failedAttempts);
 
             if (failedAttempts >= MAX_ATTEMPTS && attempt.getBlockedUntil() == null) {
-                attempt.setBlockedUntil(LocalDateTime.now().plusHours(3));
+                attempt.setBlockedUntil(LocalDateTime.now().plusHours(2));
             }
         }
 
@@ -75,6 +79,17 @@ public class LoginAttemptService {
         }
 
         return LocalDateTime.now().isBefore(attempt.getBlockedUntil());
+    }
+
+    public boolean checkAndDeleteAttemptIfNeeded(LoginAttempt attempt) {
+        LocalDateTime now = LocalDateTime.now();
+        if (attempt != null
+                && now.isAfter(attempt.getResetCounterDate())
+                && (attempt.getBlockedUntil() == null || now.isAfter(attempt.getBlockedUntil()))) {
+            loginAttemptRepository.deleteById(attempt.getId());
+            return true;
+        }
+        return false;
     }
 
     public LoginAttempt findByIp(String ip) {

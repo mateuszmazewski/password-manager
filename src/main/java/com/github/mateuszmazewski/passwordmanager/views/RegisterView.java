@@ -10,6 +10,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -39,6 +41,7 @@ public class RegisterView extends HorizontalLayout {
     PasswordField masterPassword = new PasswordField("Hasło główne");
     Button registerButton = new Button("Zarejestruj się");
     Button loginButton = new Button("Zaloguj się");
+    Span variousPasswordsInfo = new Span("Dla większego bezpieczeństwa użyj dwóch różnych haseł");
     User user = new User();
     PasswordEncoder passwordEncoder;
     private final UserService service;
@@ -63,6 +66,8 @@ public class RegisterView extends HorizontalLayout {
                         username -> username != null && !service.userExists(username),
                         Messages.USERNAME_NOT_UNIQUE)
                 .bind(User::getUsername, User::setUsername);
+
+        variousPasswordsInfo.getElement().getThemeList().add("badge");
 
         password.addValueChangeListener(e -> Util.validatePassword(password, passwordStrength, true));
         masterPassword.addValueChangeListener(e -> Util.validatePassword(masterPassword, masterPasswordStrength, true));
@@ -91,7 +96,10 @@ public class RegisterView extends HorizontalLayout {
 
         form.add(
                 new H2("Rejestracja nowego użytkownika"),
-                username, email, password, passwordStrength, masterPassword, masterPasswordStrength,
+                username, email,
+                new H3(),
+                variousPasswordsInfo,
+                password, passwordStrength, masterPassword, masterPasswordStrength,
                 registerButton
         );
 

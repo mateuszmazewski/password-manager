@@ -75,7 +75,12 @@ public class MainLayout extends AppLayout {
             Button logoutButton = new Button("Wyloguj się");
             logoutButton.addClickListener(e -> authenticatedUser.logout());
 
-            Span username = new Span("Zalogowano jako: " + user.getUsername());
+            String loggedInUser = user.getUsername();
+            if (loggedInUser.length() > 32) {
+                loggedInUser = loggedInUser.substring(0, 32) + "...";
+            }
+
+            Span username = new Span("Zalogowano jako: " + loggedInUser);
             username.addClassNames("font-medium", "text-s", "text-secondary", "px-m");
 
             layout.add(username, logoutButton);

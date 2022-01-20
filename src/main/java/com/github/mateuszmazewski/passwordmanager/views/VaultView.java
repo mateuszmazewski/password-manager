@@ -19,7 +19,6 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -164,11 +163,9 @@ public class VaultView extends VerticalLayout {
             if (vaultEntity.getEncryptedPassword() == null || vaultEntity.getEncryptedPassword().isEmpty()) { // Adding new entry
                 form.setVisible(true);
                 form.setDeleteButtonVisible(false);
-                form.setCopyButtonVisible(false);
             } else { // Editing existing entry
                 form.validateMasterPasswordDialog(VaultEntityForm.Action.DECRYPT);
                 form.setDeleteButtonVisible(true);
-                form.setCopyButtonVisible(true);
             }
             addClassName("editing");
         }

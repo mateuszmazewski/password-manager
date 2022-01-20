@@ -1,16 +1,15 @@
 package com.github.mateuszmazewski.passwordmanager.views.forms;
 
 import com.github.mateuszmazewski.passwordmanager.data.Messages;
-import com.github.mateuszmazewski.passwordmanager.security.Util;
 import com.github.mateuszmazewski.passwordmanager.data.entity.User;
 import com.github.mateuszmazewski.passwordmanager.data.entity.VaultEntity;
 import com.github.mateuszmazewski.passwordmanager.security.AESUtil;
+import com.github.mateuszmazewski.passwordmanager.security.Util;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -27,9 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
-import java.awt.Toolkit;
 import java.util.Base64;
 
 public class VaultEntityForm extends EntityForm {
@@ -42,7 +38,6 @@ public class VaultEntityForm extends EntityForm {
     private VaultEntity vaultEntity;
     private final PasswordEncoder passwordEncoder;
     private final User authenticatedUser;
-    Button copyButton = new Button("Kopiuj hasło do schowka", VaadinIcon.COPY.create());
     ProgressBar passwordStrength = new ProgressBar();
 
     public enum Action {
@@ -59,7 +54,6 @@ public class VaultEntityForm extends EntityForm {
 
         password.addValueChangeListener(e -> Util.validatePassword(password, passwordStrength, false));
 
-        copyButton.addClickListener(e -> copyToClipboard(password.getValue()));
         passwordStrength.setMin(Util.PASSWORD_STRENGTH_MIN);
         passwordStrength.setMax(Util.PASSWORD_STRENGTH_MAX);
 
@@ -99,7 +93,6 @@ public class VaultEntityForm extends EntityForm {
                 password,
                 new Label("Siła hasła"),
                 passwordStrength,
-                copyButton,
                 createButtonLayout()
         );
         saveButton.addClickListener(e -> validateAndSave());
@@ -241,16 +234,6 @@ public class VaultEntityForm extends EntityForm {
 
     public void setDeleteButtonVisible(boolean visible) {
         deleteButton.setVisible(visible);
-    }
-
-    public void setCopyButtonVisible(boolean visible) {
-        copyButton.setVisible(visible);
-    }
-
-    private void copyToClipboard(String s) {
-        Transferable transferable = new StringSelection(s);
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(transferable, null);
-        Notification.show(Messages.COPIED_TO_CLIPBOARD).addThemeVariants(NotificationVariant.LUMO_SUCCESS);
     }
 
 }

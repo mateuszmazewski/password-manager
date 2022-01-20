@@ -63,6 +63,11 @@ public class VaultEntityForm extends EntityForm {
         passwordStrength.setMin(Util.PASSWORD_STRENGTH_MIN);
         passwordStrength.setMax(Util.PASSWORD_STRENGTH_MAX);
 
+        name.setClearButtonVisible(true);
+        username.setClearButtonVisible(true);
+        url.setClearButtonVisible(true);
+
+
         binder.forField(name)
                 .withValidator(
                         name -> name != null && !name.isEmpty(),

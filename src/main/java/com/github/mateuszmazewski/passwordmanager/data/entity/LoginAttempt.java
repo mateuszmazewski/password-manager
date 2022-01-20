@@ -2,6 +2,7 @@ package com.github.mateuszmazewski.passwordmanager.data.entity;
 
 import com.github.mateuszmazewski.passwordmanager.data.AbstractEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 public class LoginAttempt extends AbstractEntity {
 
     @NotBlank
+    @Column(length = 30)
     private String ip;
     private int failedAttempts;
     private LocalDateTime blockedUntil;

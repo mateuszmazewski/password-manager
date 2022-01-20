@@ -16,7 +16,7 @@ import java.util.Set;
 public class User extends AbstractEntity {
 
     public final static int MIN_PASSWORD_LENGTH = 8;
-    @Column(unique = true)
+    @Column(unique = true, length = 100)
     private String username;
     @Email(message = Messages.EMAIL_INVALID)
     @NotBlank(message = Messages.EMPTY)

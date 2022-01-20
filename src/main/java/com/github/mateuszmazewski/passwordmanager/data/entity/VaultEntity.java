@@ -3,6 +3,7 @@ package com.github.mateuszmazewski.passwordmanager.data.entity;
 import com.github.mateuszmazewski.passwordmanager.data.AbstractEntity;
 import com.github.mateuszmazewski.passwordmanager.data.Messages;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,7 +21,9 @@ public class VaultEntity extends AbstractEntity {
     private String username;
 
     private String encryptedPassword;
+    @Column(length = 30)
     private String salt;
+    @Column(length = 30)
     private String iv;
 
     public Integer getUserId() {

@@ -2,6 +2,7 @@ package com.github.mateuszmazewski.passwordmanager.data.entity;
 
 import com.github.mateuszmazewski.passwordmanager.data.AbstractEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ public class Connection extends AbstractEntity {
     @NotNull
     private Integer userId;
     @NotBlank
+    @Column(length = 30)
     private String ip;
     private String userAgent;
     private LocalDateTime lastConnectionDate;

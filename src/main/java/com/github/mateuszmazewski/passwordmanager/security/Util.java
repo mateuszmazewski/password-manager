@@ -75,9 +75,9 @@ public class Util {
             passwordField.setErrorMessage(Messages.EMPTY);
             return false;
         } else {
-            if (passwordField.getValue().length() > 255) {
+            if (passwordField.getValue().length() > 100) {
                 passwordField.setInvalid(true);
-                passwordField.setErrorMessage(Messages.LENGTH_255);
+                passwordField.setErrorMessage(Messages.LENGTH_100);
                 return false;
             } else {
                 passwordField.setInvalid(false);

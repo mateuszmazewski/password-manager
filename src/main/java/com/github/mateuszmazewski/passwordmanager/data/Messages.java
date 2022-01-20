@@ -17,5 +17,6 @@ public class Messages {
     public static final String COPIED_TO_CLIPBOARD = "Skopiowano hasło do schowka.";
     public static final String CODE_NO_LONGER_VALID = "Upłynął czas na wprowadzenie kodu. Wygeneruj nowy kod.";
     public static final String URL_FORMAT = "Adres musi zaczynać się od \"http://\" lub \"https://\".";
+    public static final String LENGTH_100 = "Może mieć max. 100 znaków długości.";
     public static final String LENGTH_255 = "Może mieć max. 255 znaków długości.";
 }
